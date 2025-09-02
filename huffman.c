@@ -91,13 +91,13 @@ void compressFile(char* input, char* output, char** codes, int* freqs){
 }
 
 void decompress(const char* input, const char* output, int cap) {
-    FILE* in = fopen(inputFilename, "rb");
+    FILE* in = fopen(input, "rb");
     if (!in) {
         perror("Input file error");
         exit(1);
     }
 
-    FILE* out = fopen(outputFilename, "w");
+    FILE* out = fopen(output, "w");
     if (!out) {
         perror("Output file error");
         exit(1);
