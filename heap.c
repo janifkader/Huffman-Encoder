@@ -41,8 +41,8 @@ void bubbleUp(MinHeap* heap, int nodeIndex){
 
 HeapNode* extractMin(MinHeap* heap){
     HeapNode* q = malloc(sizeof(HeapNode));
-    *q = heap->arr[1];
-    swap(heap, 1, heap->size);
+    *q = heap->arr[1]; // Store min
+    swap(heap, 1, heap->size); // Delete min from heap
     heap->arr[heap->size].priority = -1;
     heap->arr[heap->size].character = -1;
     heap->size = heap->size-1;
@@ -50,24 +50,23 @@ HeapNode* extractMin(MinHeap* heap){
     int left;
     int right;
     int c;
-    while (true) {
+    while (true) { // Loop through heap to search for successor
         left = leftIdx(heap, v);
         right = rightIdx(heap, v);
         c = v;
-
         if (left <= heap->size && heap->arr[left].priority < heap->arr[c].priority) {
             c = left;
         }
         if (right <= heap->size && heap->arr[right].priority < heap->arr[c].priority) {
             c = right;
         }
-        if (c == v) {
+        if (c == v) { // Successor found
             break;
         }
         swap(heap, v, c);
         v = c;
     }
-  return q;
+  return q; // Return min
 }
 
 void insert(MinHeap* heap, HeapNode* node) {
@@ -80,9 +79,8 @@ void insert(MinHeap* heap, HeapNode* node) {
     int i = heap->size;
     heap->arr[i] = *node;
 
-    // Bubble up
     while (i > 1 && heap->arr[i].priority < heap->arr[i / 2].priority) {
-        swap(heap, i, i / 2);
+        swap(heap, i, i / 2); // Bubble up
         i = i / 2;
     }
 }
