@@ -30,7 +30,9 @@ HeapNode* buildTree(int* freqs, int cap){
         newNode->right = right;
         insert(heap, newNode);
     }
-    return extractMin(heap);;
+    HeapNode* min = extractMin(heap);
+    deleteHeap(heap);
+    return min;
 }
 
 void getCode(HeapNode* root, char* code, char** codes, int len){
@@ -88,7 +90,7 @@ void compressFile(char* input, char* output, char** codes, int* freqs){
     fclose(outputFile);
 }
 
-void decompress(const char* inputFilename, const char* outputFilename, int cap) {
+void decompress(const char* input, const char* output, int cap) {
     FILE* in = fopen(inputFilename, "rb");
     if (!in) {
         perror("Input file error");

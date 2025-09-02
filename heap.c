@@ -9,57 +9,18 @@ HeapNode* createNode(int priority, char character){
     return p;
 }
 
-/* Returns the index of the left child of a node at index 'nodeIndex' in
- * minheap 'heap', if such exists.  Returns NOTHING if there is no such left
- * child.
- */
 int leftIdx(MinHeap* heap, int nodeIndex){
     return 2 * nodeIndex;
 }
 
-/* Returns the index of the right child of a node at index 'nodeIndex' in
- * minheap 'heap', if such exists.  Returns NOTHING if there is no such right
- * child.
- */
 int rightIdx(MinHeap* heap, int nodeIndex){
     return 2 * nodeIndex + 1;
 }
 
-/* Returns the index of the parent of a node at index 'nodeIndex' in minheap
- * 'heap', if such exists.  Returns NOTHING if there is no such parent.
- */
 int parentIdx(MinHeap* heap, int nodeIndex){
     return nodeIndex/2;
 }
 
-/* Returns node at index 'nodeIndex' in minheap 'heap'.
- * Precondition: 'nodeIndex' is a valid index in 'heap'
- *               'heap' is non-empty
- */
-HeapNode nodeAt(MinHeap* heap, int nodeIndex){
-    return heap->arr[nodeIndex];
-}
-
-/* Returns priority of node at index 'nodeIndex' in minheap 'heap'.
- * Precondition: 'nodeIndex' is a valid index in 'heap'
- *               'heap' is non-empty
- */
-int priorityAt(MinHeap* heap, int nodeIndex){
-    return heap->arr[nodeIndex].priority;
-}
-
-/* Returns ID of node at index 'nodeIndex' in minheap 'heap'.
- * Precondition: 'nodeIndex' is a valid index in 'heap'
- *               'heap' is non-empty
- */
-char idAt(MinHeap* heap, int nodeIndex){
-    return heap->arr[nodeIndex].character;
-}
-
-/* Returns index of node with ID 'id' in minheap 'heap'.
- * Precondition: 'id' is a valid ID in 'heap'
- *               'heap' is non-empty
- */
 int indexOf(MinHeap* heap, int id){
     return id;
 }
@@ -74,17 +35,10 @@ void swap(MinHeap* heap, int index1, int index2){
     }
 }
 
-/* Bubbles up the element newly inserted into minheap 'heap' at index
- * 'nodeIndex', if 'nodeIndex' is a valid index for heap. Has no effect
- * otherwise.
- */
 void bubbleUp(MinHeap* heap, int nodeIndex){
     swap(heap, parentIdx(heap, nodeIndex), nodeIndex);
 }
 
-/* Removes and returns the node with minimum priority in minheap 'heap'.
- * Precondition: heap is non-empty
- */
 HeapNode* extractMin(MinHeap* heap){
     HeapNode* q = malloc(sizeof(HeapNode));
     *q = heap->arr[1];
@@ -116,11 +70,6 @@ HeapNode* extractMin(MinHeap* heap){
   return q;
 }
 
-/* Inserts a new node with priority 'priority' and ID 'id' into minheap 'heap'.
- * Precondition: 'id' is unique within this minheap
- *               0 <= 'id' < heap->capacity
- *               heap->size < heap->capacity
- */
 void insert(MinHeap* heap, HeapNode* node) {
     if (heap->size >= heap->capacity) {
         printf("Heap is full!\n");
@@ -138,39 +87,10 @@ void insert(MinHeap* heap, HeapNode* node) {
     }
 }
 
-
-/* Returns priority of the node with ID 'id' in 'heap'.
- * Precondition: 'id' is a valid node ID in 'heap'.
- */
 int getPriority(MinHeap* heap, int id){
     return heap->arr[indexOf(heap, id)].priority;
 }
 
-/* Sets priority of node with ID 'id' in minheap 'heap' to 'newPriority', if
- * such a node exists in 'heap' and its priority is larger than
- * 'newPriority', and returns True. Has no effect and returns False, otherwise.
- * Note: this function bubbles up the node until the heap property is restored.
- */
-bool decreasePriority(MinHeap* heap, int id, int newPriority){
-    if (newPriority >= getPriority(heap, id)){
-        return false;
-    }
-    heap->arr[indexOf(heap, id)].priority = newPriority;
-    while (heap->arr[parentIdx(heap, indexOf(heap, id))].priority > newPriority){
-        bubbleUp(heap, indexOf(heap, id));
-    }
-    return true;
-}
-
-/* Prints the contents of this heap, including size, capacity, full index
- * map, and, for each non-empty element of the heap array, that node's ID and
- * priority. */
-
-
-
-/* Returns a newly created empty minheap with initial capacity 'capacity'.
- * Precondition: capacity >= 0
- */
 MinHeap* newHeap(int capacity){
     MinHeap *new_heap = malloc(sizeof(MinHeap));
     new_heap->size = 0;
@@ -179,8 +99,6 @@ MinHeap* newHeap(int capacity){
     return new_heap;
 }
 
-/* Frees all memory allocated for minheap 'heap'.
- */
 void deleteHeap(MinHeap* heap){
     free(heap->arr);
     free(heap);
