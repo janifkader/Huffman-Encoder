@@ -68,6 +68,14 @@ void compressFile(char* input, char* output, char** codes, int* freqs);
  */
 void decompress(const char* input, const char* output, int cap);
 
+/* 
+ * Free the memory associated with the Huffman codes.
+ * code: The memory associated with each individual code.
+ * codes: The memory associated with the array containing the codes.
+ * return: void.
+ */
+void deleteCodes(char* code, char** codes);
+
 #endif
 
 

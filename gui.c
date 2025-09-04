@@ -28,7 +28,7 @@ static void on_view_file(GtkWidget *button, gpointer user_data){
         else{
             while (true){
                 g_print("Selected file: %s\n", filename);
-                if (strstr(filename, ".huff\0") != NULL){ // Must be a .huff file
+                if (g_str_has_suffix(filename, ".huff")){ // Must be a .huff file
                     int frequencies[256] = {0}; // Initialize frequencies
                     getFrequency(frequencies, filename); // Collect frequencies
                     if (access(filename, F_OK) == 0) {
@@ -83,7 +83,7 @@ static void on_view_file(GtkWidget *button, gpointer user_data){
                 }
             }
         }
-        
+        g_free(filename);
     }
     gtk_widget_destroy(dialog);
 }
@@ -126,9 +126,10 @@ static void on_compress_file(GtkWidget *button, gpointer user_data){
                 }
             }
             HeapNode* root = buildTree(frequencies, cap); // Build the huffman tree
-            char** codes = (char**)malloc(256*sizeof(char*));
-            char* code = (char*)malloc(256*sizeof(char));
+            char** codes = (char**)calloc(256, sizeof(char*));
+            char* code = (char*)calloc(256, sizeof(char));
             getCode(root, code, codes, 0); // Find the codes
+            deleteTree(root);
             char fn[128] = "output.huff"; // Initialize name of output file
             int i = 1;
             while (access(fn, F_OK) == 0){
@@ -144,7 +145,9 @@ static void on_compress_file(GtkWidget *button, gpointer user_data){
                                   "Downloaded as %s", fn);
             gtk_dialog_run (GTK_DIALOG (message));
             gtk_widget_destroy (message);
+            deleteCodes(code, codes);
         }
+        g_free(filename);
     }
     gtk_widget_destroy(dialog);
 }
@@ -157,6 +160,12 @@ int launch(int argc, char** argv){
     GtkWidget *scrolled_window;
     GtkWidget *text_view;
     GtkTextBuffer *buffer;
+
+    gtk_window_set_default_size(GTK_WINDOW(window), 800, 600);  // reasonable default
+    gtk_window_set_resizable(GTK_WINDOW(window), TRUE);         // allow resizing
+    gtk_window_set_geometry_hints(GTK_WINDOW(window), NULL,
+                                  &(GdkGeometry){.max_width = 1280, .max_height = 720},
+                                  GDK_HINT_MAX_SIZE);
     gtk_window_set_title(GTK_WINDOW(window), "Decoder"); // Set title to decoder
     gtk_window_set_default_size(GTK_WINDOW(window), 300, 100);
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL); // Set close signal

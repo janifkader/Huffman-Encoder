@@ -74,7 +74,7 @@ void compressFile(char* input, char* output, char** codes, int* freqs){
 
     fwrite(freqs, sizeof(int), 256, outputFile); // Write the frequencies of each char to the output file
 
-    char byteBuffer = 0;
+    unsigned char byteBuffer = 0;
     int bitCount = 0;
 
     int c = 0;
@@ -125,8 +125,16 @@ void decompress(const char* input, const char* output, int cap) {
             }
         }
     }
-
+    deleteTree(root);
     fclose(in); // Close the input file
     fclose(out); // Close the output file
+}
+
+void deleteCodes(char* code, char** codes){
+    for (int j = 0; j < 256; j++) {
+        free(codes[j]);
+    }
+    free(codes);
+    free(code);
 }
 

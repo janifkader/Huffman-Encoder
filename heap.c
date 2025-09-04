@@ -78,6 +78,7 @@ void insert(MinHeap* heap, HeapNode* node) {
     heap->size++;
     int i = heap->size;
     heap->arr[i] = *node;
+    free(node);
 
     while (i > 1 && heap->arr[i].priority < heap->arr[i / 2].priority) {
         swap(heap, i, i / 2); // Bubble up
@@ -100,4 +101,13 @@ MinHeap* newHeap(int capacity){
 void deleteHeap(MinHeap* heap){
     free(heap->arr);
     free(heap);
+}
+
+void deleteTree(HeapNode *root){
+    if (root == NULL){
+        return;
+    }
+    deleteTree(root->left);
+    deleteTree(root->right);
+    free(root);
 }

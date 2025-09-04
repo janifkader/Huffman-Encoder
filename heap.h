@@ -122,4 +122,11 @@ MinHeap* newHeap(int capacity);
  */
 void deleteHeap(MinHeap* heap);
 
+/* 
+ * Frees all memory allocated for nodes in the Huffman Tree.
+ * tree: The root node in the tree.
+ * return: void.
+ */
+void deleteTree(HeapNode* tree);
+
 #endif
